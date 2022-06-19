@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PM2E11800.MainPage">
+
+    <StackLayout>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+            <Image Source="logo.png"
+            HeightRequest="90"
+            HorizontalOptions="Start"
+            Margin="20,25,0,0"
+            Aspect="AspectFill" />
+            
+            <Label Text="SITE VISITOR APP"
+                   Margin="20"
+                   FontAttributes="Bold"
+                   FontSize="Title"/>
+        </StackLayout>
+             
+            
+        <Label Text="IMAGEN SITIO VISITADO" 
+            HorizontalOptions="Center"
+            FontAttributes="Bold"
+               Margin="10"/>
+        
+        <Image 
+            x:Name="Foto" 
+            Source="imagen.png" 
+            WidthRequest="300" 
+            HeightRequest="160" 
+            HorizontalOptions="Center"/>
+
+        <Button
+            x:Name="TomarFoto"
+            Text="Tomar foto"
+            WidthRequest      ="200"
+            HeightRequest     ="50"
+            CornerRadius      ="25"
+            HorizontalOptions ="Center"
+            Image="camera.png"/>
+
+        <Label Text="Latitud" FontAttributes="Bold" Margin="30,0,0,0" />
+
+        <Entry 
+            Text="{Binding latitud}"  
+            x:Name="txtlatitud" 
+            Placeholder="Latitud" 
+            Keyboard="Text" 
+            Margin="30,0,30,0"  
+            FontSize="15" 
+            IsReadOnly="True"/>
+
+        <Label Text="Longitud" FontAttributes="Bold" Margin="30,0,0,0" />
+        <Entry 
+            Text="{Binding longitud}" 
+            x:Name="txtlongitud" 
+            Placeholder="Longitud" 
+            Keyboard="Text" 
+            Margin="30,0,30,0"  
+            FontSize="15" 
+            IsReadOnly="True"/>
+        
+        <Label Text="Descripción:" FontAttributes="Bold" Margin="30,0,0,0"/>
+        <Editor 
+            Text="{Binding descripcion}" 
+            x:Name="txtdescripcion" 
+            Margin="30,0,30,0" 
+            Keyboard="Text" 
+            Placeholder="Describa la ubicación"  
+            FontSize="15"/>
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+        <Button
+            x:Name="btnGuardar"
+            Text="Agregar"
+            WidthRequest      ="130"
+            HeightRequest     ="50"
+            CornerRadius      ="25"
+            HorizontalOptions ="End"
+            Image="guardar.png"/>
+
+        <Button
+            x:Name="btnLista"
+            Text="Lista sitios"
+            WidthRequest      ="150"
+            HeightRequest     ="50"
+            CornerRadius      ="25"
+            HorizontalOptions ="End"
+            Image="lista.png"/>
+        </StackLayout>
+        
+        <Button
+            x:Name="btnSalir"
+            Text="Salir App"
+            WidthRequest      ="130"
+            HeightRequest     ="50"
+            CornerRadius      ="25"
+            HorizontalOptions ="Center"
+            Image="salir.png"/>
+
+
+    </StackLayout>
+
+</ContentPage>
