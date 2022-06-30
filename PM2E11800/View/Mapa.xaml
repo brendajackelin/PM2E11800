@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             x:Class="PM2E11800.View.Mapa">
+    <StackLayout>
+
+        <Entry Placeholder="Id" 
+               Keyboard="Text"
+               IsVisible="false"
+               Text="{Binding descripcion}"/>
+        
+        <Entry Placeholder="Id" 
+               Keyboard="Text"
+               IsVisible="false"
+               Text="{Binding imagen}"/>
+
+
+        <Label Text="MAPA DEL SITIO"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize ="16"
+                   FontAttributes="Bold"/>
+
+            <maps:Map IsShowingUser="True" x:Name="Maps" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="20"   />
+
+            <Button
+                Margin="15"
+                x:Name="btnCompartir"
+                Text="Compartir imagen ubicacion"
+                WidthRequest      ="300"
+                HeightRequest     ="50"
+                CornerRadius      ="25"
+                HorizontalOptions ="Center"
+                Image="compartir.png"/>
+    </StackLayout>
+</ContentPage>

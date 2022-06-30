@@ -20,6 +20,6 @@ namespace PM2E11800.Models
         [MaxLength(250)]
         public string descripcion { get; set; }
 
-        public string imagen { get; set; }
+        public Byte[] imagen { get; set; }
     }
 }

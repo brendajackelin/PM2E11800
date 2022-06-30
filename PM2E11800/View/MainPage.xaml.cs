@@ -10,23 +10,45 @@ using Plugin.Media;
 using Xamarin.Forms.Xaml;
 using System.IO;
 using Plugin.Geolocator;
-
+using PM2E11800.View;
 
 namespace PM2E11800
 {
     public partial class MainPage : ContentPage
     {
         public bool takedfoto = false;
-        public byte[] imgbyte;
-        public Image image = new Image();
-        string base64ball = "";
+        //string base64ball = "";
+
+        Plugin.Media.Abstractions.MediaFile FileFoto = null;
 
         public MainPage()
         {
             InitializeComponent();
-            Ubicacion();
+            GetLocation();
         }
 
+        //Obtener ubicación
+        public async void GetLocation()
+        {
+            Location Location = await Geolocation.GetLastKnownLocationAsync();
+
+            if (Location == null)
+            {
+                Location = await Geolocation.GetLocationAsync(new GeolocationRequest
+                {
+                    DesiredAccuracy = GeolocationAccuracy.Medium,
+                    Timeout = TimeSpan.FromSeconds(30)
+                }); ;
+            }
+
+            //Mostrar en las cajas de texto
+            txtlatitud.Text = Location.Latitude.ToString();
+            txtlongitud.Text = Location.Longitude.ToString();
+
+
+        }
+
+        /*
         //Metodo boton tomar foto
         private async void TomarFoto(object sender, EventArgs e)
         {
@@ -56,47 +78,7 @@ namespace PM2E11800
 
             }
 
-        }
-
-        //Validar ubicacion
-        private async void Ubicacion()
-        {
-            //Validar si inicia el pugin
-            if (!CrossGeolocator.IsSupported)
-            {
-                await DisplayAlert("Error", "Ha ocurrido un error al cargar el plugin", "OK");
-                return;
-            }
-
-            //Valida si el GPS está activo
-            if (CrossGeolocator.Current.IsGeolocationEnabled)
-            {
-                CrossGeolocator.Current.PositionChanged += Current_PositionChanged;
-
-                await CrossGeolocator.Current.StartListeningAsync(new TimeSpan(0, 0, 1), 0.5);
-
-            }
-            else
-            {
-                await DisplayAlert("Error", "El GPS no está activo en este dispositivo", "OK");
-            }
-
-        }
-
-        //Obtener la ubicación
-        private void Current_PositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
-        {
-            if (!CrossGeolocator.Current.IsListening)
-            {
-
-                return;
-            }
-            var position = CrossGeolocator.Current.GetPositionAsync();
-
-            //Mostrar latitud y longitud en las cajas de texto
-            txtlatitud.Text = position.Result.Latitude.ToString();
-            txtlongitud.Text = position.Result.Longitude.ToString();
-        }
+        }*/
 
         //Guardar los datos en la base de datos de SQLite
         private async void Guardar(object sender, EventArgs e)
@@ -110,8 +92,8 @@ namespace PM2E11800
                         latitud = Convert.ToDouble(this.txtlatitud.Text),
                         longitud = Convert.ToDouble(this.txtlongitud.Text),
                         descripcion = this.txtdescripcion.Text,
-                        imagen = base64ball
-
+                        //imagen = base64ball
+                        imagen = ConvertImageToByteArray()
                     };
 
                     var resultado = await App.BD.GrabarUbicacion(sites);
@@ -133,8 +115,6 @@ namespace PM2E11800
                     await DisplayAlert("Mensaje", ex.Message.ToString(), "OK");
 
                 }
-            }else{
-                await DisplayAlert("Error", "No se pudo guardar la ubicacion", "Ok");
             }
         }
 
@@ -144,7 +124,8 @@ namespace PM2E11800
             if (String.IsNullOrWhiteSpace(txtlatitud.Text) ||
                 String.IsNullOrWhiteSpace(txtlongitud.Text) ||
                 String.IsNullOrWhiteSpace(txtdescripcion.Text) ||
-                takedfoto == false)
+                //takedfoto == false
+                FileFoto == null)
             {
                 await this.DisplayAlert("Advertencia", "Todos los campos son obligatorios", "OK");
             }
@@ -160,7 +141,50 @@ namespace PM2E11800
             takedfoto = false;
         }
 
+        //Salir de la App
+        private void salir(object sender, EventArgs e)
+        {
+            System.Environment.Exit(0);
+        }
 
+        //Ver Lista de sitios
+        private async void lista(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new Sitios());
+        }
 
+        private Byte[] ConvertImageToByteArray()
+        {
+            if (FileFoto != null)
+            {
+                using (MemoryStream memory = new MemoryStream())
+                {
+                    Stream stream = FileFoto.GetStream();
+                    stream.CopyTo(memory);
+                    return memory.ToArray();
+                }
+            }
+            return null;
+        }
+
+        private async void TomarFoto(object sender, EventArgs e)
+        {
+            FileFoto = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            {
+                Directory = "MisFotos",
+                Name = "test.jpg",
+                SaveToAlbum = true
+            });
+
+            await DisplayAlert("path directorio", FileFoto.Path, "OK");
+
+            if (FileFoto != null)
+            {
+                Foto.Source = ImageSource.FromStream(() =>
+                {
+                    return FileFoto.GetStream();
+                });
+            }
+        }
     }
 }

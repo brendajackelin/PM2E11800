@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PM2E11800.View.Sitios">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="LISTA DE SITIOS"
+                VerticalOptions="CenterAndExpand" 
+                HorizontalOptions="CenterAndExpand" 
+                   FontSize="18"
+                   FontAttributes="Bold"
+                   Margin="10"/>
+
+            
+            
+            <StackLayout>
+                    <Entry IsVisible="false" x:Name="id" ></Entry>
+                    <Entry IsVisible="false" x:Name="txtlatitud" ></Entry>
+                    <Entry IsVisible="false" x:Name="txtlongitud" ></Entry>
+                    <Entry IsVisible="false" x:Name="img" />
+
+                    
+
+            </StackLayout>
+
+            <ListView
+                
+                ItemsSource="{Binding ListViewSource}"
+                HasUnevenRows="True"
+                x:Name="ListView"
+                IsPullToRefreshEnabled="{Binding IsRefreshingTxt}">
+                
+                
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60" />
+                                </Grid.RowDefinitions>
+                                
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="150" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="Start" Padding="15">
+                                
+                                    <StackLayout Grid.Column="0" 
+                                             Grid.Row="0">
+
+                                      
+                                    </StackLayout>
+
+                                    <StackLayout Grid.Column="1" 
+                                             Grid.Row="1">
+                      
+                                        <Label Text="{Binding descripcion}" 
+                                           FontSize="16"/>    
+                                        
+                                    </StackLayout>
+                                    
+                                </StackLayout>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Button
+                    x:Name="btnEliminar"
+                    Text="Eliminar Sitio"
+                    Clicked="eliminar"
+                    WidthRequest      ="180"
+                    HeightRequest     ="50"
+                    CornerRadius      ="25"
+                    HorizontalOptions ="End"
+                    Image="eliminar.png"/>  
+
+                <Button
+                    x:Name="btnMapa"
+                    Text="Ver Mapa"
+                    Clicked="verMapa"
+                    WidthRequest      ="150"
+                    HeightRequest     ="50"
+                    CornerRadius      ="25"
+                    HorizontalOptions ="End"
+                    Image="mapa.png"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="© Brenda García 201810110018 | Juan Vigil 201810110400"
+                    FontSize="10"
+                    Margin="10"
+                    HorizontalOptions="Center"/>
+            </StackLayout>
+
+
+
+
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
